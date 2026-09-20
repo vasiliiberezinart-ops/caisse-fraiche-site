@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caisse Fraîche by LIRAA — caisses bois sur-mesure</title>
+  <meta name="description" content="Caisses en bois sur-mesure pour œuvres d'art. Devis automatique en 2 minutes. Paris 14e.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="hero" id="hero">
+    <a class="insta" href="#" id="insta-link" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+    </a>
+    <img class="lamp" src="assets/lamp.png" alt="Caisse Fraîche">
+
+    <div class="stage">
+      <button class="zone zone-crate" id="zone-crate" type="button" aria-label="Caisse">
+        <img class="zone-poster" src="assets/crate.jpg" alt="">
+        <video class="zone-video" muted playsinline preload="auto"></video>
+      </button>
+
+      <section class="devis" id="devis">
+        <h1>Demande<br>de devis</h1>
+        <p class="lead">Décrivez votre projet, on vous répond sous 48h.</p>
+        <form id="devis-form" novalidate>
+          <div id="objets"></div>
+          <button type="button" class="btn-ghost" id="add-objet">Ajouter un objet +</button>
+
+          <fieldset class="options">
+            <legend>Options supplémentaires</legend>
+            <div id="options"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Vos coordonnées</legend>
+            <label>Nom / Prénom ou Société <i class="info" tabindex="0" data-tip="La personne ou l'entreprise à qui adresser le devis et, ensuite, la facture.">i</i>
+              <input type="text" name="nom" placeholder="ex : Jeanne Dupont — Galerie Dupont" required></label>
+            <label>Adresse de facturation <i class="info" tabindex="0" data-tip="Adresse complète (numéro, rue, code postal, ville) qui figurera sur le devis puis sur la facture.">i</i>
+              <input type="text" name="adresse" placeholder="Numéro, rue, code postal, ville" required></label>
+            <label>Adresse email <i class="info" tabindex="0" data-tip="Votre devis vous sera envoyé automatiquement à cette adresse dès sa génération.">i</i>
+              <input type="email" name="email" placeholder="vous@exemple.com" required></label>
+            <label>SIRET — si société, facultatif <i class="info" tabindex="0" data-tip="À remplir uniquement si vous commandez en tant qu'entreprise. Laissez ce champ vide si vous êtes un particulier.">i</i>
+              <input type="text" name="siret" placeholder="14 chiffres" inputmode="numeric"></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Délai souhaité <i class="info" tabindex="0" data-tip="Un délai express à 2 jours entraîne une majoration de 20% sur le coût de main d'oeuvre, pour compenser la mobilisation prioritaire de l'atelier.">i</i></legend>
+            <div class="delai">
+              <label class="card"><input type="radio" name="delai" value="2 jours"><span><strong>2 jours</strong><small>Express — majoration de 20%</small></span></label>
+              <label class="card"><input type="radio" name="delai" value="2 à 4 jours" checked><span><strong>2 à 4 jours</strong><small>Standard — sans majoration</small></span></label>
+            </div>
+          </fieldset>
+
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="estimate" id="estimate" aria-live="polite"></div>
+          <button type="submit" class="btn-primary" id="submit">Recevoir mon devis</button>
+          <p class="note">Envoyé automatiquement à votre adresse email</p>
+        </form>
+        <div id="devis-result" hidden></div>
+      </section>
+
+      <button class="zone zone-podium" id="zone-podium" type="button" aria-label="Objet sur socle">
+        <video class="zone-video" muted playsinline preload="auto"></video>
+      </button>
+    </div>
+  </header>
+
+  <section class="how" id="how">
+    <h2>Comment ça marche</h2>
+    <!-- TODO texte Nikita -->
+    <ol>
+      <li><strong>Photogrammétrie</strong> — nous venons prendre l'empreinte 3D de votre objet, sans le déplacer.</li>
+      <li><strong>Conception du calage</strong> — le calage intérieur est modélisé au millimètre.</li>
+      <li><strong>Fabrication</strong> — caisse en contreplaqué et bois massif, assemblée en atelier à Paris.</li>
+      <li><strong>Livraison</strong> — la caisse arrive chez vous ; mise en caisse et transport en option.</li>
+    </ol>
+  </section>
+
+  <footer class="foot">
+    <p><strong>Caisse Fraîche by LIRAA</strong> · 106 rue Bracion, 75014 Paris</p>
+    <p><a href="#" id="foot-mail"></a> · <a href="#" id="foot-insta" target="_blank" rel="noopener">Instagram</a> · SIRET : à compléter</p>
+  </footer>
+
+  <template id="objet-template">
+    <fieldset class="objet">
+      <legend>Objet à emballer <span class="num"></span></legend>
+      <button type="button" class="remove" aria-label="Supprimer cet objet">Supprimer</button>
+      <p class="sub">Fabrication seule</p>
+      <label>Nature de l'objet <i class="info" tabindex="0" data-tip="Décrivez ce que la caisse doit protéger (ex : sculpture, tableau, céramique, luminaire...). Cela nous aide à adapter le calage intérieur.">i</i>
+        <input type="text" name="nature" placeholder="ex : Sculpture" required></label>
+      <div class="dims">
+        <span class="dims-label">Caractéristiques de l'objet <i class="info" tabindex="0" data-tip="Mesurez la plus grande longueur, la largeur, la hauteur (en cm) et le poids (en kg) de l'objet. Ces valeurs déterminent directement le calcul de la caisse (plaques et planches nécessaires).">i</i></span>
+        <input type="number" name="L" min="1" step="0.1" placeholder="Long. (cm)" required>
+        <input type="number" name="l" min="1" step="0.1" placeholder="Larg. (cm)" required>
+        <input type="number" name="H" min="1" step="0.1" placeholder="Haut. (cm)" required>
+        <input type="number" name="poids" min="0.1" step="0.1" placeholder="Poids (kg)" required>
+      </div>
+      <div class="file">
+        <span class="dims-label">Photo de l'objet <i class="info" tabindex="0" data-tip="Une photo nous aide à préparer votre devis et à anticiper d'éventuelles précautions particulières.">i</i></span>
+        <label class="file-btn">Ajouter une photo<input type="file" name="photo" accept="image/*"></label>
+        <span class="file-name">Aucune photo</span>
+      </div>
+    </fieldset>
+  </template>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha384-Pqp51FUN2/qzfxZxBCtF0stpc9ONI6MYZpVqmo8m20SoaQCzf+arZvACkLkirlPz" crossorigin="anonymous" defer></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
